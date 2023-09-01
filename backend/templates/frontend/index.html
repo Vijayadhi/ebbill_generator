@@ -1,0 +1,306 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <title>TN EB Bill Calculator </title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'frontend/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'frontend/assets/assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/assets/assets/css/templatemo-plot-listing.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/assets/assets/css/animated.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/assets/assets/css/owl.css' %}">
+
+<style>
+    .close-icon {
+        position: absolute;
+        top: 10px; /* Adjust this value to move the icon more towards the top */
+        right: 10px; /* Keep this value to have the icon in the top-right corner */
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    /* Add this style block within the <head> section of your HTML */
+    .banner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 750px;
+        max-height: 350px;
+        background-color: #191c24;
+        color: red;
+        padding: 50px;
+        text-align: center;
+        border-radius: 10px;
+        display: none;
+        border: 2px solid red; /* Added border style */
+    }
+
+    .banner-content {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: center;
+        position: relative;
+    }
+
+    .banner-action-button {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background-color: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+   .searchText {
+        color: red; /* Set the text color to red */
+    }
+
+    .searchText::-webkit-input-placeholder {
+        color: red; /* Set the placeholder color to red */
+    }
+
+    .searchText::-moz-placeholder {
+        color: red; /* Set the placeholder color to red */
+        opacity: 1;
+    }
+
+    .searchText:-ms-input-placeholder {
+        color: red; /* Set the placeholder color to red */
+    }
+
+    .searchText::placeholder {
+        color: red !important; /* Set the placeholder color to red */
+    }
+
+    /* Additional styles for the button */
+    .main-button {
+        background: #191c24;
+        color: red;
+        border: none;
+    }
+
+    .main-button i {
+        background: #000000;
+        color: red;
+    }
+
+</style>
+</head>
+
+<body>
+
+<!-- ***** Preloader Start ***** -->
+
+<!-- ***** Preloader End ***** -->
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <!--                    <a href="index.html" class="logo">-->
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="/home" {% if request.path == '/home' %} style="color: red;"{% endif %}>Home</a></li>
+                        <li><a href="/login" {% if request.path == '/login' %} style="color: red;"{% endif %}>Login</a></li>
+                        <li><a href="/create_user" {% if request.path == '/create_user' %} style="color: red;"{% endif %}>Register</a></li>
+
+                        <li>
+                            <!--                                                    <div class="main-white-button" style="background: #191c24">-->
+                            <!--                                                        <a href="#" style="color: red;">-->
+                            <!--                                                            <i class="fa fa-plus" style="color: red"></i> Add Your Invoices-->
+                            <!--                                                        </a>-->
+                            <!--                                                    </div>-->
+                        </li>
+
+
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+
+<div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+<div class="main-banner">
+    <div class="container">
+        <div class="row">
+            <div class="banner" id="banner">
+                <div class="banner-content">
+                    <button class="close-icon" onclick="closeBanner()">
+                        <i class="fa fa-times" style="background: #000000; color: red"></i>
+                    </button>
+                    <p style="color: red">Keep Visualized track on your electricity and maintain <br>reports of the
+                        consumption charges.</p>
+                    <br>
+                    <div class="button-container">
+                        <a class="banner-action-button btn btn-secondary" href="/login"
+                           style="color: red; background: #000000">Login</a>
+                        <a class="banner-action-button btn btn-secondary" href="/create_user"
+                           style="color: red; background: #000000">Create Account</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="top-text header-text">
+                    <h6 style="color: red">Based On New Electricity Charges</h6>
+                    <h2 style="color: red">Online TN Eb Bill Calculator</h2>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <form id="search-form" name="gs" method="submit" role="search" action="#" style="background: #191c24; ">
+                    <div class="row">
+                        <div class="col-lg-5 align-self-center">
+                            <fieldset>
+                                <input type="number" name="previousReading" class="searchText"
+                                       style="color: red" placeholder="Previous Reading" required>
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-5 align-self-center">
+                            <fieldset>
+                                <input type="number" name="currentReading" class="searchText"
+                                     style="color: red"  placeholder="Current Reading" required>
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-2 align-self-center">
+                            <fieldset>
+                                <button class="main-button" type="button" onclick="calculateBill()"
+                                        style="background: #191c24; color: red"><i
+                                        class="fa fa-search" style="background: #000000; color: red"></i> Calculate Bill
+                                </button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+
+                <br><br>
+
+                <div class="container" id="resultContainer" style="display: none;">
+                    <div id="bill-result" class="row justify-content-md-center">
+                        <div class="row justify-content-center">
+                            <div class="col-6">
+                                <table style="color: red; background: #191c24; width: 100%; border-radius: 2px">
+                                    <!-- Set width to 100% -->
+                                    <tr>
+                                        <td class="col">Total units consumed:</td>
+                                        <td class="col-md-auto" id="unitsConsumedCell"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Bill amount:</td>
+                                        <td id="billAmountCell"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="{% static 'frontend/assets/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'frontend/assets/assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'frontend/assets/assets/js/animation.js' %}"></script>
+    <script src="{% static 'frontend/assets/assets/js/imagesloaded.js' %}"></script>
+    <script src="{% static 'frontend/assets/assets/js/custom.js' %}"></script>
+
+</div>
+
+</body>
+<script>
+    function calculateBill() {
+
+        const resultContainer = document.getElementById('resultContainer');
+
+        resultContainer.style.display = 'block';
+
+        const previousReading = parseInt(document.getElementsByName('previousReading')[0].value);
+        const currentReading = parseInt(document.getElementsByName('currentReading')[0].value);
+
+        let unitsConsumed = currentReading - previousReading;
+        let billAmount = 0.0;
+
+        if (unitsConsumed <= 100) {
+            billAmount = 0.0;
+        } else if (unitsConsumed <= 200) {
+            billAmount = (unitsConsumed - 100) * 2.25;
+        } else if (unitsConsumed <= 400) {
+            billAmount = ((unitsConsumed - 200) * 4.50) + 225;
+        } else if (unitsConsumed <= 500) {
+            billAmount = ((unitsConsumed - 400) * 6.0) + 1125;
+        } else if (unitsConsumed <= 600) {
+            billAmount = ((unitsConsumed - 500) * 8.0) + 1950;
+        } else if (unitsConsumed <= 800) {
+            billAmount = ((unitsConsumed - 600) * 9.0) + 2750;
+        } else if (unitsConsumed <= 1000) {
+            billAmount = ((unitsConsumed - 800) * 10.0) + 4550;
+        } else {
+            billAmount = ((unitsConsumed - 800) * 11.0) + 4350;
+        }
+
+        document.getElementById('unitsConsumedCell').textContent = unitsConsumed;
+        document.getElementById('billAmountCell').textContent = billAmount.toFixed(2);
+
+        // Add this script block at the end of your HTML body
+
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.getElementById("banner");
+        banner.style.display = "block";
+    });
+
+    function closeBanner() {
+        const banner = document.getElementById("banner");
+        banner.style.display = "none";
+    }
+</script>
+
+
+
+
+</html>

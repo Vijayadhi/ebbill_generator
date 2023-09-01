@@ -1,0 +1,62 @@
+{% extends "backend/base.html" %}
+{% block title %} Profile {% endblock %}
+{% block content %}
+<div class="container-fluid pt-4 px-xl-5 d-flex justify-content-center"> <!-- Center the content -->
+    <div class="col-sm-12 col-md-8 col-lg-10"> <!-- Increase the column width -->
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">Add Invoice</h6>
+            <form method="POST" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="full_name" name="full_name"
+                           value="{{ request.user.full_name }}" placeholder="Full Name" required>
+                    <label for="full_name">Full Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="email" name="email" value="{{ request.user.email }}"
+                           placeholder="Email" style="background: #000000" readonly>
+                    <label for="email">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" name="username"
+                           value="{{ request.user.username }}"
+                           placeholder="Username" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="phone_no" name="phone_no"
+                           {% if request.user.mobile_no %}
+                           value="{{ request.user.mobile_no }}"
+                           {% endif %}
+                           placeholder="Phone Number" required>
+                    <label for="phone_no">Phone Number</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="cons_no" name="cons_no"
+                           {% if request.user.cons_no %}
+                           value="{{ request.user.cons_no }}"
+                           {% else %}
+                           value="0"
+
+                           {% endif %}
+                           placeholder="cons_no">
+                    <label for="cons_no">Consumer No.</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                           value="{{ request.user.date_of_birth }}"
+                           placeholder="date_of_birth">
+                    <label for="cons_no">Date of Birth</label>
+                </div>
+               <div class="mb-3">
+                    <label for="profile_pic" class="form-label">Profile Picture</label>
+                    <input class="form-control bg-dark" type="file" id="profile_pic" name="profile_pic">
+                    <small class="form-text text-muted">{{ request.user.profile_pic.url }}</small>
+               </div>
+                <button type="submit" class="btn btn-primary">Update Information</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

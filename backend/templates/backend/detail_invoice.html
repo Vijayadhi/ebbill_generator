@@ -1,0 +1,127 @@
+{% extends "backend/base.html" %}
+{% block title %} Add Invoice {% endblock %}
+{% block content %}
+<div class="container-fluid pt-4 px-xl-5 d-flex justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-10">
+        <div class="bg-secondary rounded h-100 p-4 position-relative"> <!-- Add position-relative class -->
+            <h6 class="mb-4"> Invoice Detail</h6>
+            <a href="#" class="delete-invoice" data-invoice-id="{{ invoice.id }}" style="position: absolute; top: 15px; right: 30px;">
+                <i class="fas fa-trash"></i>
+            </a>
+
+            <a href="javascript:history.back()" style="position: absolute; top: 15px; right: 75px;">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="name_id" name="name_id" value="{{ request.user.id }}" placeholder="User Name" style="background: #000000">
+                    <label for="name_id" >User ID</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="name" name="name" value="{{ request.user.username }}" placeholder="User Name" readonly style="background: #000000">
+                    <label for="name_id" >User Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="month" name="month" value="{{ invoice.month }}" style="background: #000000" readonly>
+                    <label for="month">Month</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="previous_reading" name="previous_reading" placeholder="Previous Reading" value="{{invoice.previous_reading}}" style="background: #000000" readonly>
+                    <label for="previous_reading">Previous Reading</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="current_reading" name="current_reading"  value="{{invoice.current_reading}}" placeholder="Current Reading" style="background: #000000" readonly>
+                    <label for="current_reading">Current Reading</label>
+                </div>
+            <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="units_consumed" name="units_consumed" placeholder="Units Consumed"  value="{{invoice.units_consumed}}" style="background: #000000" readonly>
+                    <label for="current_reading">Units Consumed</label>
+                </div>
+            <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="total_amount" name="current_reading" placeholder="Current Reading" value="{{invoice.bill_amount}}"style="background: #000000" readonly>
+                    <label for="current_reading">Bill Amount</label>
+                </div>
+<!--                <button type="submit" class="btn btn-primary">Add Invoice</button>-->
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+const csrfToken = getCookie("csrftoken");
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Find all delete invoice links with the specified class
+    const deleteInvoiceLinks = document.querySelectorAll(".delete-invoice");
+
+    // Attach a click event listener to each delete link
+    deleteInvoiceLinks.forEach(link => {
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+
+            const invoiceId = link.getAttribute("data-invoice-id"); // Get the invoice ID
+
+            // Show SweetAlert confirmation
+            Swal.fire({
+                title: "Delete Invoice?",
+                text: "Are you sure you want to delete this invoice?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If user confirms, send DELETE request to the server
+                    fetch(`http://127.0.0.1:8000/${invoiceId}/delete_invoice`, {
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRFToken": csrfToken
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Handle success or error response from the server
+                        if (data.success) {
+                            Swal.fire("Deleted!", "The invoice has been deleted.", "success")
+                                .then(() => {
+                                    // Reload the page after a short delay
+                                    setTimeout(() => {
+                                        window.location.href = "/dashboard";
+                                    }, 1000); // Delay in milliseconds
+                                });
+                        } else {
+                            Swal.fire("Error", "An error occurred while deleting the invoice.", "error");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire("Error", "An error occurred while communicating with the server.", "error");
+                    });
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
